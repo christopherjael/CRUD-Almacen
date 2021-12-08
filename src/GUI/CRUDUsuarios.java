@@ -34,6 +34,13 @@ public class CRUDUsuarios extends JFrame {
 	private JTable tbUsuarios;
 	private MysqlConnector objConn = new MysqlConnector();
 	
+	private String id = null;
+	private String usuario = null;
+	private String nombre = null;
+	private String apellido  = null;
+	private String telefono = null;
+	private String correo = null;
+	
 
 	public CRUDUsuarios() {
 		addWindowListener(new WindowAdapter() {
@@ -61,11 +68,12 @@ public class CRUDUsuarios extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int fila = tbUsuarios.rowAtPoint(e.getPoint());
 				
-				String usuario =tbUsuarios.getValueAt(fila, 1).toString();
-				String nombre =tbUsuarios.getValueAt(fila, 2).toString();
-				String apellido =tbUsuarios.getValueAt(fila, 3).toString();
-				String telefono = tbUsuarios.getValueAt(fila, 4).toString();
-				String correo = tbUsuarios.getValueAt(fila, 5).toString();
+				id = tbUsuarios.getValueAt(fila, 0).toString();
+				usuario =tbUsuarios.getValueAt(fila, 1).toString();
+				nombre =tbUsuarios.getValueAt(fila, 2).toString();
+				apellido =tbUsuarios.getValueAt(fila, 3).toString();
+				telefono = tbUsuarios.getValueAt(fila, 4).toString();
+				correo = tbUsuarios.getValueAt(fila, 5).toString();
 			}
 		});
 		tbUsuarios.setBounds(8, 60, 495, 292);
@@ -85,6 +93,16 @@ public class CRUDUsuarios extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!(usuario == null)) {
+					ActualizarUsuario actuUser = new ActualizarUsuario(id,usuario, nombre, apellido, telefono, correo);
+					setVisible(false);
+				}else {
+					JOptionPane.showMessageDialog(null, "Primero selecciona el registro que quieres actualizar","No seleccion",JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 		btnActualizar.setFont(new Font("Dialog", Font.BOLD, 13));
 		btnActualizar.setIcon(new ImageIcon(CRUDUsuarios.class.getResource("/Imagenes/3643749-edit-pen-pencil-write-writing_113397.png")));
 		btnActualizar.setBackground(Color.WHITE);
@@ -92,6 +110,19 @@ public class CRUDUsuarios extends JFrame {
 		contentPane.add(btnActualizar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!(usuario == null)) {
+					int op = JOptionPane.showConfirmDialog(null,"¿Estas seguro de eliminar este registro?");
+					if(op == 0) {
+						objConn.eliminarRegistro(id, "Usuarios");
+						mostrarRegistrosUsuarios();
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "Primero selecciona el registro que quieres actualizar","No seleccion",JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 		btnEliminar.setFont(new Font("Dialog", Font.BOLD, 13));
 		btnEliminar.setIcon(new ImageIcon(CRUDUsuarios.class.getResource("/Imagenes/trash_bin_icon-icons.com_67981.png")));
 		btnEliminar.setBackground(Color.WHITE);
