@@ -1,9 +1,10 @@
 package GUI;
 
 import java.awt.EventQueue;
-
+import MysqlConfig.MysqlConnector;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -13,23 +14,25 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Login {
 
-	private JFrame frame;
-	private JTextField textField;
-	private JPasswordField passwordField;
-
-	/**
-	 * Launch the application.
-	 */
+	private JFrame frmLogin;
+	private JTextField txtUsuario;
+	private JPasswordField passContraseña;
+	private MysqlConnector objConn = new MysqlConnector();
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Login window = new Login();
-					window.frame.setVisible(true);
+					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -37,58 +40,58 @@ public class Login {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Login() {
 		initialize();
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	
+	
+	
 	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(UIManager.getColor("Button.background"));
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 390, 546);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setLocationRelativeTo(null); 
+		frmLogin = new JFrame();
+		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/Imagenes/user_icon-icons.com_66546.png")));
+		frmLogin.setTitle("Login");
+		frmLogin.getContentPane().setBackground(UIManager.getColor("Button.background"));
+		frmLogin.setResizable(false);
+		frmLogin.setBounds(100, 100, 390, 546);
+		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.getContentPane().setLayout(null);
+		frmLogin.setLocationRelativeTo(null);
+		frmLogin.setVisible(true);
 		
 		JLabel iconLogin = new JLabel("");
 		iconLogin.setBounds(123, 26, 128, 128);
 		iconLogin.setIcon(new ImageIcon(Login.class.getResource("/Imagenes/user_icon-icons.com_66546.png")));
-		frame.getContentPane().add(iconLogin);
+		frmLogin.getContentPane().add(iconLogin);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setFont(new Font("Dialog", Font.BOLD, 13));
 		lblUsuario.setBounds(59, 198, 54, 16);
-		frame.getContentPane().add(lblUsuario);
+		frmLogin.getContentPane().add(lblUsuario);
 		
-		textField = new JTextField();
-		textField.setBounds(59, 221, 255, 25);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		txtUsuario = new JTextField();
+		txtUsuario.setBounds(59, 221, 255, 25);
+		frmLogin.getContentPane().add(txtUsuario);
+		txtUsuario.setColumns(10);
 		
 		JLabel lblContraseña = new JLabel("Contraseña");
 		lblContraseña.setFont(new Font("Dialog", Font.BOLD, 13));
 		lblContraseña.setBounds(59, 258, 78, 16);
-		frame.getContentPane().add(lblContraseña);
+		frmLogin.getContentPane().add(lblContraseña);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(60, 286, 255, 25);
-		frame.getContentPane().add(passwordField);
+		passContraseña = new JPasswordField();
+		passContraseña.setBounds(60, 286, 255, 25);
+		frmLogin.getContentPane().add(passContraseña);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(UIManager.getColor("CheckBoxMenuItem.acceleratorForeground"));
+		panel.setBackground(new Color(0, 0, 139));
 		panel.setBounds(0, 371, 374, 136);
-		frame.getContentPane().add(panel);
+		frmLogin.getContentPane().add(panel);
 		
 		JButton btnNewButton = new JButton("Registrarse");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Registrarse registrarse = new Registrarse();
+				Registrarse registrarse = new Registrarse("Login");
+				frmLogin.setVisible(false);
 			}
 		});
 		btnNewButton.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -99,7 +102,7 @@ public class Login {
 		JButton btnAcceder = new JButton("Acceder");
 		btnAcceder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Principal principal = new Principal();
+				login();
 			}
 		});
 		btnAcceder.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -109,5 +112,45 @@ public class Login {
 		panel.setLayout(null);
 		panel.add(btnNewButton);
 		panel.add(btnAcceder);
+	}
+	
+	//METODOS
+	
+	private void login() {
+		String usuario = txtUsuario.getText().trim();
+		String contraseña = new String(passContraseña.getPassword()).trim();
+		Boolean UsuarioExiste = false;
+		
+		
+		if(usuario.isEmpty() || contraseña.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Debe ingresar su usuario y contraseña, si no está registrado debe registrarse", "Error", JOptionPane.ERROR_MESSAGE);
+		}else {
+			try {
+				ResultSet result = objConn.ejecutarConsulta("SELECT * FROM Usuarios");
+				result.next();
+				do {
+					if((usuario.equals(result.getString("Usuario"))) && (contraseña.equals(result.getString("Contraseña")))) {
+						UsuarioExiste = true;
+					}
+				} while (result.next());
+				
+				if(UsuarioExiste) {
+					Principal principal = new Principal();
+					frmLogin.setVisible(false);
+				}else {
+					JOptionPane.showMessageDialog(null,"El Ususario No existe","Error",JOptionPane.ERROR_MESSAGE);
+					txtUsuario.setText(null);
+					passContraseña.setText(null);
+					txtUsuario.requestFocus();
+				}
+				
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "No hay usuarios registrados, registre un nuevo usuario."+e2.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+				txtUsuario.setText(null);
+				passContraseña.setText(null);
+				txtUsuario.requestFocus();
+			}
+		
+		}
 	}
 }
