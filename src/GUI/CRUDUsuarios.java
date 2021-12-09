@@ -1,7 +1,6 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import javax.swing.UIManager;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.Toolkit;
@@ -30,9 +28,10 @@ import java.awt.event.MouseEvent;
 
 public class CRUDUsuarios extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable tbUsuarios;
-	private MysqlConnector objConn = new MysqlConnector();
+	private MysqlConnector objConn;
 	
 	private String id = null;
 	private String usuario = null;
@@ -46,7 +45,7 @@ public class CRUDUsuarios extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Login login = new Login();
+				new Login();
 			}
 		});
 		setIconImage(Toolkit.getDefaultToolkit().getImage(CRUDUsuarios.class.getResource("/Imagenes/Gender_Neutral_User_icon-icons.com_55902.png")));
@@ -82,7 +81,7 @@ public class CRUDUsuarios extends JFrame {
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AgregarUsuario registrarse = new AgregarUsuario("CRUDUsuarios");
+				new AgregarUsuario("CRUDUsuarios");
 				setVisible(false);
 			}
 		});
@@ -96,7 +95,7 @@ public class CRUDUsuarios extends JFrame {
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!(usuario == null)) {
-					ActualizarUsuario actuUser = new ActualizarUsuario(id,usuario, nombre, apellido, telefono, correo);
+					new ActualizarUsuario(id,usuario, nombre, apellido, telefono, correo);
 					setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null, "Primero selecciona el registro que quieres actualizar","No seleccion",JOptionPane.INFORMATION_MESSAGE);
@@ -115,7 +114,9 @@ public class CRUDUsuarios extends JFrame {
 				if(!(usuario == null)) {
 					int op = JOptionPane.showConfirmDialog(null,"¿Estas seguro de eliminar este registro?");
 					if(op == 0) {
+						objConn = new MysqlConnector();
 						objConn.eliminarRegistro(id, "Usuarios");
+						objConn.cerrarConexion();
 						mostrarRegistrosUsuarios();
 					}
 				}else {
@@ -133,7 +134,7 @@ public class CRUDUsuarios extends JFrame {
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				Login login = new Login();
+				new Login();
 			}
 		});
 		btnCerrarSesion.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -153,7 +154,7 @@ public class CRUDUsuarios extends JFrame {
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				Principal prin = new Principal();
+				new Principal();
 			}
 		});
 		btnMenu.setIcon(new ImageIcon(CRUDUsuarios.class.getResource("/Imagenes/home_icon-icons.com_73532.png")));
@@ -175,6 +176,7 @@ public class CRUDUsuarios extends JFrame {
 		
 		DefaultTableModel modelo = new DefaultTableModel(null, titulos);
 		try {
+			objConn = new MysqlConnector();
 			ResultSet res = objConn.ejecutarConsulta("SELECT * FROM Usuarios");
 			 while (res.next()){
 				registros[0] = res.getString("ID");
@@ -185,9 +187,10 @@ public class CRUDUsuarios extends JFrame {
 				registros[5] = res.getString("Correo");
 				modelo.addRow(registros);
 			};
+			res.close();
 			tbUsuarios.setModel(modelo);
 			tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(25);
-			
+			objConn.cerrarConexion();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Error!", JOptionPane.ERROR_MESSAGE);
 		}

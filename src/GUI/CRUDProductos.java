@@ -1,8 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -30,9 +27,10 @@ import java.awt.event.MouseEvent;
 
 public class CRUDProductos extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable tbProductos;
-	private MysqlConnector objConn = new MysqlConnector();
+	private MysqlConnector objConn;
 	
 	private String id = null;
 	private String nombre = null;
@@ -45,7 +43,7 @@ public class CRUDProductos extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Principal principa = new Principal();
+				new Principal();
 			}
 		});
 		setIconImage(Toolkit.getDefaultToolkit().getImage(CRUDProductos.class.getResource("/Imagenes/wondicon-ui-free-parcel_111208.png")));
@@ -88,7 +86,7 @@ public class CRUDProductos extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				AgregarProducto agreP = new AgregarProducto();
+				new AgregarProducto();
 			}
 		});
 		btnAgregar.setIcon(new ImageIcon(CRUDProductos.class.getResource("/Imagenes/1491254405-plusaddmoredetail_82972.png")));
@@ -101,7 +99,7 @@ public class CRUDProductos extends JFrame {
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!(nombre == null)) {
-					ActualizarProducto actP = new ActualizarProducto(id,nombre, marca, categoria, precio, stock);
+					new ActualizarProducto(id,nombre, marca, categoria, precio, stock);
 					setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null, "Primero selecciona el registro que quieres actualizar","No seleccion",JOptionPane.INFORMATION_MESSAGE);
@@ -121,6 +119,7 @@ public class CRUDProductos extends JFrame {
 				if(!(nombre == null)) {
 					int op = JOptionPane.showConfirmDialog(null,"¿Estas seguro de eliminar este registro?");
 					if(op == 0) {
+						objConn=new MysqlConnector();
 						objConn.eliminarRegistro(id, "Productos");
 						mostrarRegistros();
 					}
@@ -141,7 +140,7 @@ public class CRUDProductos extends JFrame {
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				Principal principal = new Principal();
+				new Principal();
 			}
 		});
 		btnMenu.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -154,7 +153,7 @@ public class CRUDProductos extends JFrame {
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				Login login = new Login();
+				new Login();
 			}
 		});
 		btnCerrarSesion.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -174,6 +173,7 @@ public class CRUDProductos extends JFrame {
 		
 		DefaultTableModel model = new DefaultTableModel(null, titulos);
 		try {
+			objConn = new MysqlConnector();
 			ResultSet res = objConn.ejecutarConsulta("SELECT * From Productos");		
 			while(res.next()){
 				registros[0] = res.getString("ID");
@@ -188,7 +188,7 @@ public class CRUDProductos extends JFrame {
 			
 			tbProductos.setModel(model);
 			tbProductos.getColumnModel().getColumn(0).setPreferredWidth(40);
-			
+			objConn.cerrarConexion();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Error!", JOptionPane.ERROR_MESSAGE);
 		}

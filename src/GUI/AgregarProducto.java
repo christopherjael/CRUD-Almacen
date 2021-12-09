@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,13 +19,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.DefaultComboBoxModel;
 
 public class AgregarProducto extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private final JPanel panel = new JPanel();
 	private JTextField txtNombre;
@@ -35,13 +30,13 @@ public class AgregarProducto extends JFrame {
 	private JTextField txtCategoria;
 	private JTextField txtPrecio;
 	private JTextField txtStock;
-	private MysqlConnector objConn = new MysqlConnector();
+	private MysqlConnector objConn;
 
 	public AgregarProducto() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				CRUDProductos crudP = new CRUDProductos();
+				new CRUDProductos();
 			}
 		});
 		setResizable(false);
@@ -95,8 +90,9 @@ public class AgregarProducto extends JFrame {
 				}
 				
 				if(!nombre.isEmpty() && !marca.isEmpty() && !categoria.isEmpty() && !precio.isEmpty() && !stock.isEmpty()) {
+					objConn = new MysqlConnector();
 					objConn.AgregarRegistro(nombre, marca, categoria, precio, stock);
-					
+					objConn.cerrarConexion();
 					txtNombre.setText(null);
 					txtMarca.setText(null);
 					txtCategoria.setText(null);
@@ -119,7 +115,7 @@ public class AgregarProducto extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				CRUDProductos crudP = new CRUDProductos();
+				new CRUDProductos();
 			}
 		});
 		btnCancelar.setForeground(Color.WHITE);

@@ -32,7 +32,7 @@ public class AgregarUsuario extends JFrame {
 	private JTextField txtCorreo;
 	private JPasswordField passContraseña;
 	private JPasswordField passConfirContraseña;
-	private MysqlConnector objConn = new MysqlConnector();
+	private MysqlConnector objConn;
 	private final JPanel panel = new JPanel();
 
 	public AgregarUsuario(String back) {
@@ -40,9 +40,9 @@ public class AgregarUsuario extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if(back == "Login") {
-					Login login = new Login();
+					new Login();
 				}else if (back == "CRUDUsuarios") {
-					CRUDUsuarios crudU = new CRUDUsuarios();
+					new CRUDUsuarios();
 				}
 				
 			}
@@ -190,6 +190,7 @@ public class AgregarUsuario extends JFrame {
 						JOptionPane.showMessageDialog(null, "Las contraseñas no son iguales", "Error!!", JOptionPane.ERROR_MESSAGE);
 						passContraseña.requestFocus();
 					}else {
+						objConn = new MysqlConnector();
 						objConn.AgregarRegistro(usuario, nombre, apellido, telefono, correo, contraseña);
 						
 						txtUsuario.setText(null);
@@ -215,11 +216,9 @@ public class AgregarUsuario extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(back == "Login") {
-					Login login = new Login();
+					new Login();
 				}else if (back == "CRUDUsuarios") {
-					CRUDUsuarios crudU = new CRUDUsuarios();
-				}else if(back == "CRUDProductos") {
-					CRUDProductos crudP = new CRUDProductos();
+					new CRUDUsuarios();
 				}
 				setVisible(false);
 			}

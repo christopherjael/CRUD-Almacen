@@ -1,13 +1,10 @@
 package GUI;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -22,12 +19,12 @@ public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
 	public Principal() {
 		addWindowListener(new WindowAdapter() {
+
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Login login = new Login();
+				new Login();
 			}
 		});
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/Imagenes/home_icon-icons.com_73532.png")));
@@ -44,7 +41,7 @@ public class Principal extends JFrame {
 		btnProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				CRUDProductos crudP = new CRUDProductos();
+				new CRUDProductos();
 			}
 		});
 		btnProductos.setBackground(Color.WHITE);
@@ -63,7 +60,7 @@ public class Principal extends JFrame {
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				CRUDUsuarios crudU = new CRUDUsuarios();
+				new CRUDUsuarios();
 			}
 		});
 		btnUsuarios.setBounds(56, 66, 133, 129);
@@ -82,7 +79,7 @@ public class Principal extends JFrame {
 		JButton btnNewButton = new JButton("   Volver");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Login login = new Login();
+				new Login();
 				setVisible(false);
 			}
 		});

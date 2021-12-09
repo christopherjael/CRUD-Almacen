@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,7 +15,6 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.Toolkit;
 import javax.swing.JButton;
-import javax.print.attribute.standard.JobHoldUntil;
 import javax.swing.ImageIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -26,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 public class ActualizarUsuario extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JTextField txtNombre;
@@ -41,7 +39,7 @@ public class ActualizarUsuario extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				CRUDUsuarios crudU = new CRUDUsuarios();
+				new CRUDUsuarios();
 			}
 		});
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ActualizarUsuario.class.getResource("/Imagenes/3643749-edit-pen-pencil-write-writing_113397.png")));
@@ -162,7 +160,7 @@ public class ActualizarUsuario extends JFrame {
 						objConn = new MysqlConnector();
 						objConn.ActualizarRegistro(ID, tUsuario, tNombre, tApellido, tTelefono, tCorreo, tCorreo);
 						setVisible(false);
-						CRUDUsuarios crudU = new CRUDUsuarios();
+						new CRUDUsuarios();
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(null, e2.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 					}
@@ -179,7 +177,7 @@ public class ActualizarUsuario extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				CRUDUsuarios crudU = new CRUDUsuarios();
+				new CRUDUsuarios();
 			}
 		});
 		btnNewButton_1.setForeground(Color.WHITE);

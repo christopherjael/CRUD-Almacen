@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,19 +22,20 @@ import java.awt.event.WindowEvent;
 
 public class ActualizarProducto extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtMarca;
 	private JTextField txtCategoria;
 	private JTextField txtPrecio;
 	private JTextField txtStock;
-	private MysqlConnector objConn = new MysqlConnector();
+	private MysqlConnector objConn;
 
 	public ActualizarProducto(String ID,String nombre, String marca, String categoria, String precio, String stock) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				CRUDProductos crudP = new CRUDProductos();
+				new CRUDProductos();
 			}
 		});
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ActualizarProducto.class.getResource("/Imagenes/3643749-edit-pen-pencil-write-writing_113397.png")));
@@ -94,9 +93,11 @@ public class ActualizarProducto extends JFrame {
 				
 				if(!(tNombre.isEmpty()) && !(tMarca.isEmpty()) && !(tCategoria.isEmpty()) && !(tPrecio.isEmpty()) && !(tStock.isEmpty())) {
 					try {
+						objConn = new MysqlConnector();
 						objConn.ActualizarRegistro(ID, tNombre, tMarca, tCategoria, tPrecio, tStock);
+						objConn.cerrarConexion();
 						setVisible(false);
-						CRUDProductos crudP = new CRUDProductos();
+						new CRUDProductos();
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(null, e2.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 					}
@@ -114,7 +115,7 @@ public class ActualizarProducto extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				CRUDProductos crudP = new CRUDProductos();
+				new CRUDProductos();
 			}
 		});
 		btnCancelar.setForeground(Color.WHITE);

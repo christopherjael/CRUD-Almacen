@@ -17,16 +17,14 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 public class Login {
 
 	private JFrame frmLogin;
 	private JTextField txtUsuario;
 	private JPasswordField passContraseña;
-	private MysqlConnector objConn = new MysqlConnector();
-	
+	private MysqlConnector objConn;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -89,8 +87,10 @@ public class Login {
 		
 		JButton btnNewButton = new JButton("Registrarse");
 		btnNewButton.addActionListener(new ActionListener() {
+
+
 			public void actionPerformed(ActionEvent e) {
-				AgregarUsuario registrarse = new AgregarUsuario("Login");
+				new AgregarUsuario("Login");
 				frmLogin.setVisible(false);
 			}
 		});
@@ -126,6 +126,7 @@ public class Login {
 			JOptionPane.showMessageDialog(null, "Debe ingresar su usuario y contraseña, si no está registrado debe registrarse", "Error", JOptionPane.ERROR_MESSAGE);
 		}else {
 			try {
+				objConn = new MysqlConnector();
 				ResultSet result = objConn.ejecutarConsulta("SELECT * FROM Usuarios");
 				result.next();
 				do {
@@ -134,8 +135,11 @@ public class Login {
 					}
 				} while (result.next());
 				
+				result.close();
+				objConn.cerrarConexion();
+				
 				if(UsuarioExiste) {
-					Principal principal = new Principal();
+					new Principal();
 					frmLogin.setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null,"El Ususario No existe","Error",JOptionPane.ERROR_MESSAGE);
