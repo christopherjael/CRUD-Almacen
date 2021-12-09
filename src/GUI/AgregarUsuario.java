@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Registrarse extends JFrame {
+public class AgregarUsuario extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -35,7 +35,7 @@ public class Registrarse extends JFrame {
 	private MysqlConnector objConn = new MysqlConnector();
 	private final JPanel panel = new JPanel();
 
-	public Registrarse(String back) {
+	public AgregarUsuario(String back) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -43,15 +43,13 @@ public class Registrarse extends JFrame {
 					Login login = new Login();
 				}else if (back == "CRUDUsuarios") {
 					CRUDUsuarios crudU = new CRUDUsuarios();
-				}else if(back == "CRUDProductos") {
-					CRUDProductos crudP = new CRUDProductos();
 				}
 				
 			}
 		});
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Registrarse.class.getResource("/Imagenes/adduser_añadir_3553.png")));
-		setTitle("Registrarse");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AgregarUsuario.class.getResource("/Imagenes/adduser_añadir_3553.png")));
+		setTitle("Agregar Usuario");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 532, 620);
 		contentPane = new JPanel();
@@ -61,8 +59,8 @@ public class Registrarse extends JFrame {
 		setLocationRelativeTo(null); 
 		
 		JLabel iconRegistrarse = new JLabel("");
-		iconRegistrarse.setBounds(199, 29, 133, 139);
-		iconRegistrarse.setIcon(new ImageIcon(Registrarse.class.getResource("/Imagenes/adduser_añadir_3553 (1).png")));
+		iconRegistrarse.setBounds(199, 12, 133, 139);
+		iconRegistrarse.setIcon(new ImageIcon(AgregarUsuario.class.getResource("/Imagenes/adduser_añadir_3553 (1).png")));
 		iconRegistrarse.setForeground(Color.DARK_GRAY);
 		iconRegistrarse.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
@@ -140,7 +138,7 @@ public class Registrarse extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Registrar");
+		JButton btnNewButton = new JButton("Agregar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String usuario = txtUsuario.getText().trim();
@@ -192,7 +190,7 @@ public class Registrarse extends JFrame {
 						JOptionPane.showMessageDialog(null, "Las contraseñas no son iguales", "Error!!", JOptionPane.ERROR_MESSAGE);
 						passContraseña.requestFocus();
 					}else {
-						objConn.registrarUsuarios(usuario, nombre, apellido, telefono, correo, confimContraseña);
+						objConn.AgregarRegistro(usuario, nombre, apellido, telefono, correo, contraseña);
 						
 						txtUsuario.setText(null);
 						txtNombre.setText(null);
@@ -209,7 +207,7 @@ public class Registrarse extends JFrame {
 		});
 		btnNewButton.setBackground(Color.WHITE);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setIcon(new ImageIcon(Registrarse.class.getResource("/Imagenes/1491254405-plusaddmoredetail_82972.png")));
+		btnNewButton.setIcon(new ImageIcon(AgregarUsuario.class.getResource("/Imagenes/1491254405-plusaddmoredetail_82972.png")));
 		btnNewButton.setBounds(97, 34, 134, 41);
 		panel.add(btnNewButton);
 		
@@ -230,6 +228,11 @@ public class Registrarse extends JFrame {
 		btnNewButton_1.setBackground(Color.RED);
 		btnNewButton_1.setBounds(328, 34, 89, 41);
 		panel.add(btnNewButton_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("AGREGAR USUARIO");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_2.setBounds(167, 151, 182, 22);
+		contentPane.add(lblNewLabel_2);
 		
 		setVisible(true);
 	}

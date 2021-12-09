@@ -41,6 +41,12 @@ public class Principal extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnProductos = new JButton("");
+		btnProductos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				CRUDProductos crudP = new CRUDProductos();
+			}
+		});
 		btnProductos.setBackground(Color.WHITE);
 		btnProductos.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/wondicon-ui-free-parcel_111208.png")));
 		btnProductos.setBounds(245, 66, 133, 129);

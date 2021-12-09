@@ -82,7 +82,7 @@ public class CRUDUsuarios extends JFrame {
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Registrarse registrarse = new Registrarse("CRUDUsuarios");
+				AgregarUsuario registrarse = new AgregarUsuario("CRUDUsuarios");
 				setVisible(false);
 			}
 		});
@@ -186,6 +186,7 @@ public class CRUDUsuarios extends JFrame {
 				modelo.addRow(registros);
 			};
 			tbUsuarios.setModel(modelo);
+			tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(25);
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Error!", JOptionPane.ERROR_MESSAGE);

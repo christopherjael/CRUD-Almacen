@@ -90,7 +90,7 @@ public class Login {
 		JButton btnNewButton = new JButton("Registrarse");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Registrarse registrarse = new Registrarse("Login");
+				AgregarUsuario registrarse = new AgregarUsuario("Login");
 				frmLogin.setVisible(false);
 			}
 		});

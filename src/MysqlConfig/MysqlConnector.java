@@ -41,7 +41,7 @@ public class MysqlConnector {
 	
 	//AGREGAR REGISTROS
 	
-	public void registrarUsuarios(String usuario, String nombre, String apellido, String telefono, String correo, String contraseña) {
+	public void AgregarRegistro(String usuario, String nombre, String apellido, String telefono, String correo, String contraseña) {
 		try {
 			PreparedStatement pstm = conn.prepareStatement("INSERT INTO Usuarios (ID,Usuario,Nombre,Apellido,Telefono,Correo,Contraseña) VALUES (null,?,?,?,?,?,?)");
 			
@@ -54,7 +54,25 @@ public class MysqlConnector {
 			
 			pstm.execute();
 			
-			JOptionPane.showMessageDialog(null, "Usuario Registrado","Registrado", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Usuario Agregado","Registrado", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void AgregarRegistro(String nombre, String marca, String categoria, String precio, String stock) {
+		try {
+			PreparedStatement pstm = conn.prepareStatement("INSERT INTO Productos (ID,NombreProducto,MarcaProducto,CategoriaProducto,PrecioProducto,StockProducto) VALUES (null,?,?,?,?,?)");
+			
+			pstm.setString(1, nombre);
+			pstm.setString(2, marca);
+			pstm.setString(3, categoria);
+			pstm.setString(4, precio);
+			pstm.setString(5, stock);
+			
+			pstm.execute();
+			
+			JOptionPane.showMessageDialog(null, "Producto Agregado","Registrado", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -75,7 +93,26 @@ public class MysqlConnector {
 			
 			pstm.execute();
 			
-			JOptionPane.showMessageDialog(null, "Registro Actualizado","Actualizado", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Usuario Actualizado","Actualizado", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void ActualizarRegistro(String ID ,String nombre, String marca, String categoria, String precio, String stock) {
+		try {
+			PreparedStatement pstm = conn.prepareStatement("UPDATE Productos SET NombreProducto = ?, MarcaProducto = ?, CategoriaProducto = ?, PrecioProducto = ?, StockProducto= ? WHERE ID = ?");
+			
+			pstm.setString(1, nombre);
+			pstm.setString(2, marca);
+			pstm.setString(3, categoria);
+			pstm.setString(4, precio);
+			pstm.setString(5, stock);
+			pstm.setString(6, ID);
+			
+			pstm.execute();
+			
+			JOptionPane.showMessageDialog(null, "Producto Actualizado","Actualizado", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}
