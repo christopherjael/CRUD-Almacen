@@ -6,7 +6,7 @@ son AWT y Swing para el apartado grafico y Mysql Connector para hacer conexion y
 ## Tecnologias 🧰 
 * [Java](https://www.java.com/es/download/) - Lenguaje de programación
 * [JDK-17](https://www.oracle.com/java/technologies/downloads/) - Kit de desarrollo para Java
-* [AWT y Swing](https://docs.oracle.com/javase/7/docs/api/java/awt/package-summary.html) - Libreria
+* [AWT y Swing](https://docs.oracle.com/javase/7/docs/api/java/awt/package-summary.html) - Libreria para la creacion de la interfaz grafica
 * [Mysql Connector/JDBC](https://www.mysql.com/products/connector/) - Driver y libreria para conectar una base de datos Mysql
 * [Mysql](https://www.mysql.com/) - Gestor de Base de Datos
 * [Clever Cloud](https://www.clever-cloud.com/) - Hosting de la Base de Datos
